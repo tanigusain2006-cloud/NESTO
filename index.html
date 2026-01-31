@@ -1,0 +1,1531 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NESTO - Neurodiverse Education Support Tool</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // GitHub Pages compatibility - Element SDK is optional
+    const isGitHub = !window.location.href.includes('canva');
+    if (!isGitHub) {
+      const script = document.createElement('script');
+      script.src = '/_sdk/element_sdk.js';
+      document.head.appendChild(script);
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+    }
+    
+    .font-display {
+      font-family: 'Quicksand', 'Nunito', sans-serif;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    .wave-divider {
+      position: relative;
+      height: 50px;
+      overflow: hidden;
+    }
+    
+    @media (min-width: 768px) {
+      .wave-divider {
+        height: 80px;
+      }
+    }
+    
+    .wave-divider svg {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .blob {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: blob-float 8s ease-in-out infinite;
+    }
+    
+    @keyframes blob-float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(10px, -10px) rotate(5deg); }
+      66% { transform: translate(-5px, 5px) rotate(-3deg); }
+    }
+    
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    @media (hover: hover) {
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .icon-bounce {
+      animation: iconBounce 2s ease-in-out infinite;
+    }
+    
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    
+    /* Responsive typography */
+    @media (max-width: 640px) {
+      html {
+        font-size: 14px;
+      }
+    }
+    
+    /* Improve touch targets for mobile */
+    @media (max-width: 768px) {
+      button, a {
+        min-height: 44px;
+        min-width: 44px;
+      }
+    }
+    
+    /* Responsive images and SVGs */
+    img, svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background-color: #FDF8F3;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- Navigation -->
+   <nav class="sticky top-0 z-50 backdrop-blur-md" style="background-color: rgba(253, 248, 243, 0.95);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+     <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center" style="background-color: #2A9D8F;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" class="sm:w-7 sm:h-7"><circle cx="12" cy="8" r="4" fill="#FDF8F3" /> <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#FDF8F3" stroke-width="2.5" stroke-linecap="round" /> <circle cx="18" cy="6" r="2" fill="#F4A261" /> <circle cx="6" cy="6" r="2" fill="#E9C46A" />
+        </svg>
+       </div><span id="nav-title" class="font-display font-bold text-xl sm:text-2xl" style="color: #2A9D8F;">NESTO</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 lg:gap-8"><a href="#what" class="font-medium transition-colors hover:opacity-70 text-sm lg:text-base" style="color: #5D5D5D;">What</a> <a href="#why" class="font-medium transition-colors hover:opacity-70 text-sm lg:text-base" style="color: #5D5D5D;">Why</a> <a href="#activities" class="font-medium transition-colors hover:opacity-70 text-sm lg:text-base" style="color: #5D5D5D;">Activities</a> <a href="#parents" class="font-medium transition-colors hover:opacity-70 text-sm lg:text-base" style="color: #5D5D5D;">Parents</a> <a href="#privacy" class="font-medium transition-colors hover:opacity-70 text-sm lg:text-base" style="color: #5D5D5D;">Privacy</a> <a href="#schools" class="px-4 lg:px-5 py-2 lg:py-2.5 rounded-full font-semibold text-white transition-all hover:opacity-90 text-sm lg:text-base" style="background-color: #E76F51;">For Schools</a>
+      </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl" style="background-color: #F0EBE3;">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
+     </div><!-- Mobile Menu -->
+     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t pt-4" style="border-color: #E8E0D5;">
+      <div class="flex flex-col gap-3"><a href="#what" class="font-medium py-2" style="color: #5D5D5D;">What is NESTO?</a> <a href="#why" class="font-medium py-2" style="color: #5D5D5D;">Why Different</a> <a href="#activities" class="font-medium py-2" style="color: #5D5D5D;">Activities</a> <a href="#parents" class="font-medium py-2" style="color: #5D5D5D;">Parent Dashboard</a> <a href="#privacy" class="font-medium py-2" style="color: #5D5D5D;">Privacy &amp; Safety</a> <a href="#schools" class="font-medium py-2 px-4 rounded-full text-white text-center" style="background-color: #E76F51;">For Schools &amp; NGOs</a>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section class="relative overflow-hidden py-12 sm:py-16 md:py-24">
+    <div class="absolute top-20 right-10 w-24 h-24 sm:w-32 sm:h-32 blob opacity-30" style="background-color: #A8DADC;"></div>
+    <div class="absolute bottom-20 left-10 w-20 h-20 sm:w-24 sm:h-24 blob opacity-30" style="background-color: #E9C46A;"></div>
+    <div class="absolute top-40 left-1/4 w-12 h-12 sm:w-16 sm:h-16 blob opacity-20" style="background-color: #DDA0DD;"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+     <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div class="fade-in text-center md:text-left">
+       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background-color: #E8F5E9;"><span class="w-2 h-2 rounded-full" style="background-color: #81C784;"></span> <span class="text-sm font-medium" style="color: #4CAF50;">Designed for ages 5-8</span>
+       </div>
+       <h1 id="hero-title" class="font-display font-bold text-4xl sm:text-5xl md:text-6xl mb-4" style="color: #2A9D8F;">NESTO</h1>
+       <p id="hero-subtitle" class="text-lg sm:text-xl md:text-2xl font-medium mb-3" style="color: #5D5D5D;">Neurodiverse Education Support Tool</p>
+       <p id="hero-tagline" class="text-xl sm:text-2xl md:text-3xl font-semibold mb-8" style="color: #E76F51;">A calm space for curious minds</p>
+       <p class="text-base sm:text-lg leading-relaxed mb-8" style="color: #6B6B6B;">NESTO helps children explore, learn, and grow through gentle, activity-based experiences. No pressure. No scores. Just thoughtful play at their own pace.</p>
+       <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start"><a href="#activities" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all hover:opacity-90" style="background-color: #2A9D8F;"> <span>Explore Activities</span>
+         <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg></a> <a href="#parents" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all hover:opacity-80" style="background-color: #F0EBE3; color: #5D5D5D;"> <span>For Parents</span> </a>
+       </div>
+      </div><!-- Hero Illustration -->
+      <div class="relative fade-in" style="animation-delay: 0.2s;">
+       <div class="relative rounded-3xl p-6 sm:p-8" style="background-color: #FFFFFF;">
+        <svg viewbox="0 0 400 320" class="w-full"><ellipse cx="200" cy="280" rx="150" ry="30" fill="#F0EBE3" /> <circle cx="200" cy="120" r="45" fill="#F4A261" /> <circle cx="185" cy="112" r="6" fill="#FDF8F3" /> <circle cx="215" cy="112" r="6" fill="#FDF8F3" /> <circle cx="185" cy="112" r="3" fill="#5D5D5D" /> <circle cx="215" cy="112" r="3" fill="#5D5D5D" /> <path d="M190 132 Q200 142 210 132" stroke="#E76F51" stroke-width="3" fill="none" stroke-linecap="round" /> <rect x="170" y="165" width="60" height="70" rx="15" fill="#2A9D8F" /> <rect x="155" y="235" width="25" height="45" rx="10" fill="#E9C46A" /> <rect x="220" y="235" width="25" height="45" rx="10" fill="#E9C46A" /> <rect x="130" y="180" width="140" height="90" rx="12" fill="#5D5D5D" /> <rect x="138" y="188" width="124" height="74" rx="8" fill="#A8DADC" /> <circle cx="170" cy="220" r="15" fill="#E76F51" /> <circle cx="200" cy="220" r="15" fill="#E9C46A" /> <circle cx="230" cy="220" r="15" fill="#DDA0DD" /> <path d="M162 240 L178 240" stroke="#2A9D8F" stroke-width="3" stroke-linecap="round" /> <path d="M192 240 L208 240" stroke="#2A9D8F" stroke-width="3" stroke-linecap="round" /> <path d="M222 240 L238 240" stroke="#2A9D8F" stroke-width="3" stroke-linecap="round" />
+        </svg>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Important Notice Banner -->
+   <section class="py-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+     <div class="rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start gap-4" style="background-color: #FFF8E7; border: 2px solid #E9C46A;">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background-color: #E9C46A;">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" class="sm:w-6 sm:h-6"><circle cx="12" cy="12" r="10" stroke="#FDF8F3" stroke-width="2" /> <path d="M12 7v5M12 15v1" stroke="#FDF8F3" stroke-width="2" stroke-linecap="round" />
+       </svg>
+      </div>
+      <div>
+       <h3 class="font-bold text-base sm:text-lg mb-2" style="color: #B8860B;">Important to Know</h3>
+       <p class="text-sm sm:text-base" style="color: #8B7355;">NESTO is <strong>not</strong> a medical, diagnostic, or therapeutic tool. It's simply a collection of gentle, engaging activities designed to support exploration and comfort. Always consult qualified professionals for specific developmental or health concerns.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Wave Divider -->
+   <div class="wave-divider">
+    <svg viewbox="0 0 1200 80" preserveaspectratio="none"><path d="M0,40 C300,80 600,0 900,40 C1050,60 1150,20 1200,40 L1200,80 L0,80 Z" fill="#FFFFFF" />
+    </svg>
+   </div><!-- What is NESTO Section -->
+   <section id="what" class="py-16 sm:py-20" style="background-color: #FFFFFF;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12 sm:mb-16"><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #E8F5F4; color: #2A9D8F;"> Understanding NESTO </span>
+      <h2 id="what-title" class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #2A9D8F;">What is NESTO?</h2>
+      <p class="text-lg sm:text-xl max-w-3xl mx-auto" style="color: #6B6B6B;">A thoughtfully designed platform where every child can explore activities that feel comfortable, predictable, and engaging.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+      <div class="card-hover rounded-3xl p-6 sm:p-8" style="background-color: #FDF8F3;">
+       <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: #A8DADC;">
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" class="sm:w-8 sm:h-8"><circle cx="12" cy="8" r="5" stroke="#2A9D8F" stroke-width="2" /> <path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#2A9D8F" stroke-width="2" />
+        </svg>
+       </div>
+       <h3 class="font-bold text-lg sm:text-xl mb-3" style="color: #2A9D8F;">Child-First Design</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Every element is created with young learners in mind. Big buttons, clear visuals, and calm colors make navigation intuitive and stress-free.</p>
+      </div>
+      <div class="card-hover rounded-3xl p-6 sm:p-8" style="background-color: #FDF8F3;">
+       <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: #FFE5D9;">
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" class="sm:w-8 sm:h-8"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke="#E76F51" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <h3 class="font-bold text-lg sm:text-xl mb-3" style="color: #E76F51;">Activity-Based Learning</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Real-world interactions like matching, tracing, and exploring. Each activity supports natural curiosity without artificial challenges.</p>
+      </div>
+      <div class="card-hover rounded-3xl p-6 sm:p-8" style="background-color: #FDF8F3;">
+       <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: #F3E5F5;">
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" class="sm:w-8 sm:h-8"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#9C7BAD" stroke-width="2" /> <path d="M9 12L11 14L15 10" stroke="#9C7BAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <h3 class="font-bold text-lg sm:text-xl mb-3" style="color: #9C7BAD;">Neurodiverse Support</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Built with understanding of diverse learning needs. Predictable patterns, sensory-friendly design, and no unexpected surprises.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Why Different Section -->
+   <section id="why" class="py-16 sm:py-20" style="background-color: #F5F9F8;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+      <div><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #FFE5D9; color: #E76F51;"> Our Approach </span>
+       <h2 id="why-title" class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #E76F51;">Why NESTO is Different</h2>
+       <p class="text-base sm:text-lg mb-8" style="color: #6B6B6B;">We believe learning should feel like play, not pressure. NESTO removes the elements that cause stress and keeps what sparks joy.</p>
+       <div class="space-y-4">
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+          <svg width="20" height="20" viewbox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+         </div>
+         <div>
+          <h4 class="font-bold mb-1 text-sm sm:text-base" style="color: #2A9D8F;">No Scores or Rankings</h4>
+          <p class="text-sm sm:text-base" style="color: #6B6B6B;">Every interaction is valuable. No points, no levels, no comparisons.</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+          <svg width="20" height="20" viewbox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+         </div>
+         <div>
+          <h4 class="font-bold mb-1 text-sm sm:text-base" style="color: #2A9D8F;">No Timers or Pressure</h4>
+          <p class="text-sm sm:text-base" style="color: #6B6B6B;">Children move at their own pace. Activities wait patiently.</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+          <svg width="20" height="20" viewbox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+         </div>
+         <div>
+          <h4 class="font-bold mb-1 text-sm sm:text-base" style="color: #2A9D8F;">No Ads Ever</h4>
+          <p class="text-sm sm:text-base" style="color: #6B6B6B;">A completely ad-free experience. No interruptions, no distractions.</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+          <svg width="20" height="20" viewbox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+         </div>
+         <div>
+          <h4 class="font-bold mb-1 text-sm sm:text-base" style="color: #2A9D8F;">Smooth Transitions</h4>
+          <p class="text-sm sm:text-base" style="color: #6B6B6B;">Gentle animations guide between activities. No jarring changes.</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Illustration -->
+      <div class="rounded-3xl p-6 sm:p-8" style="background-color: #FFFFFF;">
+       <svg viewbox="0 0 400 400" class="w-full"><circle cx="200" cy="200" r="150" fill="#F5F9F8" /> <circle cx="200" cy="160" r="40" fill="#F4A261" /> <circle cx="187" cy="153" r="5" fill="#FDF8F3" /> <circle cx="213" cy="153" r="5" fill="#FDF8F3" /> <circle cx="187" cy="153" r="2.5" fill="#5D5D5D" /> <circle cx="213" cy="153" r="2.5" fill="#5D5D5D" /> <path d="M192 172 Q200 180 208 172" stroke="#E76F51" stroke-width="3" fill="none" stroke-linecap="round" /> <ellipse cx="200" cy="260" rx="50" ry="30" fill="#2A9D8F" /> <rect x="170" y="200" width="60" height="60" rx="15" fill="#2A9D8F" /> <ellipse cx="130" cy="230" rx="20" ry="12" fill="#F4A261" /> <ellipse cx="270" cy="230" rx="20" ry="12" fill="#F4A261" /> <circle cx="200" cy="320" r="30" fill="#FFE5D9" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </section><!-- Parents Dashboard Section -->
+   <section id="parents" class="py-16 sm:py-20" style="background-color: #FFFFFF;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12 sm:mb-16"><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #FFE5D9; color: #E76F51;"> For Parents &amp; Caregivers </span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #E76F51;">Parent Dashboard</h2>
+      <p class="text-lg sm:text-xl max-w-3xl mx-auto" style="color: #6B6B6B;">Stay connected with your child's exploration in a gentle, privacy-focused way.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8 sm:gap-12 mb-12">
+      <div class="rounded-3xl p-6 sm:p-8" style="background-color: #FDF8F3;">
+       <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: #E8F5E9;">
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" class="sm:w-8 sm:h-8"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#4CAF50" stroke-width="2" /> <path d="M3 9h18M7 13h5M7 16h3" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" />
+        </svg>
+       </div>
+       <h3 class="font-bold text-lg sm:text-xl mb-3" style="color: #2A9D8F;">Activity Overview</h3>
+       <p class="text-sm sm:text-base mb-4" style="color: #6B6B6B;">See which activities your child explored and how long they spent on each. No scores or grades—just gentle insights into their interests.</p>
+       <ul class="space-y-2 text-sm">
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">Daily activity summaries</span></li>
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">Time spent exploring</span></li>
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">Favorite activities</span></li>
+       </ul>
+      </div>
+      <div class="rounded-3xl p-6 sm:p-8" style="background-color: #FDF8F3;">
+       <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: #F3E5F5;">
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" class="sm:w-8 sm:h-8"><path d="M12 15c-3.3 0-6-2.7-6-6V7c0-3.3 2.7-6 6-6s6 2.7 6 6v2c0 3.3-2.7 6-6 6z" stroke="#9C7BAD" stroke-width="2" /> <path d="M5 14v1c0 3.9 3.1 7 7 7s7-3.1 7-7v-1" stroke="#9C7BAD" stroke-width="2" stroke-linecap="round" />
+        </svg>
+       </div>
+       <h3 class="font-bold text-lg sm:text-xl mb-3" style="color: #9C7BAD;">Privacy First</h3>
+       <p class="text-sm sm:text-base mb-4" style="color: #6B6B6B;">Your child's data stays private and secure. We never sell data, show ads, or share information with third parties.</p>
+       <ul class="space-y-2 text-sm">
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">End-to-end encryption</span></li>
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">No data selling</span></li>
+        <li class="flex items-start gap-2"><span style="color: #4CAF50;">✓</span> <span style="color: #6B6B6B;">COPPA compliant</span></li>
+       </ul>
+      </div>
+     </div>
+     <div class="rounded-3xl p-6 sm:p-8 text-center" style="background-color: #E8F5F4;">
+      <h3 class="font-bold text-xl sm:text-2xl mb-4" style="color: #2A9D8F;">Coming Soon: Parent Dashboard</h3>
+      <p class="text-base sm:text-lg mb-6 max-w-2xl mx-auto" style="color: #5D5D5D;">We're building a gentle, non-intrusive dashboard that helps you understand your child's exploration patterns without adding pressure or stress.</p><button class="px-6 py-3 rounded-full font-semibold text-white transition-all hover:opacity-90" style="background-color: #2A9D8F;"> Join the Waitlist </button>
+     </div>
+    </div>
+   </section><!-- Privacy & Safety Section -->
+   <section id="privacy" class="py-16 sm:py-20" style="background-color: #F5F9F8;">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12"><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #E8F5E9; color: #4CAF50;"> Your Child's Safety </span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #2A9D8F;">Privacy &amp; Safety</h2>
+      <p class="text-lg sm:text-xl" style="color: #6B6B6B;">We take your child's privacy seriously. Here's our commitment to you.</p>
+     </div>
+     <div class="space-y-6">
+      <div class="rounded-3xl p-6 flex items-start gap-4" style="background-color: #FFFFFF;">
+       <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4CAF50" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2" style="color: #2A9D8F;">Safe Environment</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">NESTO is a closed, protected space with no external links, no social features, and no communication with strangers.</p>
+       </div>
+      </div>
+      <div class="rounded-3xl p-6 flex items-start gap-4" style="background-color: #FFFFFF;">
+       <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#4CAF50" stroke-width="2" /> <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2" style="color: #2A9D8F;">Data Protection</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">All data is encrypted and stored securely. We collect only what's necessary for the experience and nothing more.</p>
+       </div>
+      </div>
+      <div class="rounded-3xl p-6 flex items-start gap-4" style="background-color: #FFFFFF;">
+       <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #E8F5E9;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#4CAF50" stroke-width="2" /> <path d="M9 12l2 2 4-4" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2" style="color: #2A9D8F;">Parent Control</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Parents have full control over their child's account, activities, and data. You can export or delete everything at any time.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Schools & NGOs Section -->
+   <section id="schools" class="py-16 sm:py-20" style="background-color: #FDF8F3;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12"><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #FFE5D9; color: #E76F51;"> Partnerships </span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #E76F51;">For Schools &amp; NGOs</h2>
+      <p class="text-lg sm:text-xl max-w-3xl mx-auto" style="color: #6B6B6B;">Bring NESTO to your classroom or organization with special pricing and support.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div class="rounded-3xl p-6" style="background-color: #FFFFFF;">
+       <h3 class="font-bold text-lg mb-3" style="color: #2A9D8F;">Special Pricing</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Discounted rates for schools, NGOs, and organizations serving children.</p>
+      </div>
+      <div class="rounded-3xl p-6" style="background-color: #FFFFFF;">
+       <h3 class="font-bold text-lg mb-3" style="color: #2A9D8F;">Teacher Training</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Free workshops on using NESTO effectively in your classroom or program.</p>
+      </div>
+      <div class="rounded-3xl p-6" style="background-color: #FFFFFF;">
+       <h3 class="font-bold text-lg mb-3" style="color: #2A9D8F;">Custom Activities</h3>
+       <p class="text-sm sm:text-base" style="color: #6B6B6B;">Work with us to create activities tailored to your specific needs.</p>
+      </div>
+     </div>
+     <div class="text-center"><button class="px-8 py-4 rounded-full font-semibold text-white text-lg transition-all hover:opacity-90" style="background-color: #E76F51;"> Request Partnership Info </button>
+     </div>
+    </div>
+   </section><!-- Core Activities Section -->
+   <section id="activities" class="py-16 sm:py-20" style="background-color: #FFFFFF;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12 sm:mb-16"><span class="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style="background-color: #E8F5F4; color: #2A9D8F;"> What's Inside </span>
+      <h2 id="activities-title" class="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-6" style="color: #2A9D8F;">Explore Our Activities</h2>
+      <p class="text-lg sm:text-xl max-w-3xl mx-auto" style="color: #6B6B6B;">Each activity is designed to be calm, engaging, and endlessly repeatable.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"><!-- Activity 1: Feed Children by Colour -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('match-color')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #E76F51;">
+        <svg width="120" height="100" viewbox="0 0 140 120" class="w-24 sm:w-auto"><circle cx="70" cy="30" r="18" fill="#F4A261" /> <circle cx="65" cy="27" r="3" fill="#FDF8F3" /> <circle cx="75" cy="27" r="3" fill="#FDF8F3" /> <rect x="55" y="48" width="30" height="35" rx="8" fill="#E9C46A" /> <rect x="48" y="83" width="10" height="20" rx="5" fill="#5D5D5D" /> <rect x="82" y="83" width="10" height="20" rx="5" fill="#5D5D5D" /> <circle cx="30" cy="110" r="12" fill="#FFFFFF" /> <circle cx="70" cy="110" r="12" fill="#FFFFFF" /> <circle cx="110" cy="110" r="12" fill="#FFFFFF" />
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #E76F51;">Feed Children by Colour</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Drag foods to the child wearing matching colored clothes. Like helping in the kitchen— calm sorting and decision-making.</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #E76F51;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div><!-- Activity 2: Trace Paths -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('trace-paths')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #2A9D8F;">
+        <svg width="120" height="100" viewbox="0 0 120 100" class="w-24 sm:w-auto"><path d="M20 80 Q40 20 60 50 Q80 80 100 30" stroke="#FDF8F3" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8,8" /> <circle cx="20" cy="80" r="10" fill="#E9C46A" /> <circle cx="100" cy="30" r="10" fill="#81C784" /> <circle cx="20" cy="80" r="5" fill="#2A9D8F" /> <circle cx="100" cy="30" r="5" fill="#FFFFFF" />
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #2A9D8F;">Find the Path</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Trace smooth paths with your finger from start to finish. Wide, forgiving paths that welcome slow, controlled movement.</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #2A9D8F;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div><!-- Activity 3: Connect Dots -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('connect-dots')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #9C7BAD;">
+        <svg width="120" height="100" viewbox="0 0 120 100" class="w-24 sm:w-auto"><circle cx="30" cy="30" r="8" fill="#FDF8F3" /> <circle cx="90" cy="30" r="8" fill="#FDF8F3" /> <circle cx="60" cy="50" r="8" fill="#FDF8F3" /> <circle cx="30" cy="70" r="8" fill="#FDF8F3" /> <circle cx="90" cy="70" r="8" fill="#FDF8F3" /> <text x="30" y="34" text-anchor="middle" font-size="10" fill="#9C7BAD">
+          1
+         </text> <text x="90" y="34" text-anchor="middle" font-size="10" fill="#9C7BAD">
+          2
+         </text> <text x="60" y="54" text-anchor="middle" font-size="10" fill="#9C7BAD">
+          3
+         </text> <text x="30" y="74" text-anchor="middle" font-size="10" fill="#9C7BAD">
+          4
+         </text> <text x="90" y="74" text-anchor="middle" font-size="10" fill="#9C7BAD">
+          5
+         </text> <line x1="30" y1="30" x2="90" y2="30" stroke="#E9C46A" stroke-width="2" /> <line x1="90" y1="30" x2="60" y2="50" stroke="#E9C46A" stroke-width="2" />
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #9C7BAD;">Connect the Dots</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Join numbered dots in order to reveal beautiful closed shapes. Watch your lines create circles, hearts, flowers, and stars!</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #9C7BAD;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div><!-- Activity 4: Colour by Number -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('color-by-number')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #E9C46A;">
+        <svg width="120" height="100" viewbox="0 0 120 100" class="w-24 sm:w-auto"><rect x="25" y="20" width="30" height="30" rx="4" fill="#FDF8F3" /> <rect x="65" y="20" width="30" height="30" rx="4" fill="#E76F51" /> <rect x="25" y="55" width="30" height="30" rx="4" fill="#2A9D8F" /> <rect x="65" y="55" width="30" height="30" rx="4" fill="#FDF8F3" /> <text x="40" y="40" text-anchor="middle" font-size="14" fill="#6B6B6B">
+          1
+         </text> <text x="80" y="40" text-anchor="middle" font-size="14" fill="#FDF8F3">
+          2
+         </text> <text x="40" y="75" text-anchor="middle" font-size="14" fill="#FDF8F3">
+          3
+         </text> <text x="80" y="75" text-anchor="middle" font-size="14" fill="#6B6B6B">
+          1
+         </text>
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #D4A84B;">Colour by Number</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Tap numbered sections to fill them with the matching colour. Beautiful pictures emerge as each section is completed.</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #D4A84B;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div><!-- Activity 5: Letter Bubbles -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('letter-bubbles')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #A8DADC;">
+        <svg width="120" height="100" viewbox="0 0 120 100" class="w-24 sm:w-auto"><circle cx="30" cy="35" r="20" fill="#FDF8F3" /> <circle cx="60" cy="55" r="20" fill="#FDF8F3" /> <circle cx="90" cy="35" r="20" fill="#FDF8F3" /> <text x="30" y="42" text-anchor="middle" font-size="20" font-weight="bold" fill="#2A9D8F">
+          A
+         </text> <text x="60" y="62" text-anchor="middle" font-size="20" font-weight="bold" fill="#E76F51">
+          B
+         </text> <text x="90" y="42" text-anchor="middle" font-size="20" font-weight="bold" fill="#9C7BAD">
+          A
+         </text> <path d="M30 55 Q60 90 90 55" stroke="#E9C46A" stroke-width="2" fill="none" stroke-dasharray="4,4" />
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #5DADE2;">Letter Bubbles</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Find and match letters floating in gentle bubbles. Connect the same letters to pop them together. Alphabet fun!</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #5DADE2;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div><!-- Activity 6: Food Flash Cards -->
+      <div class="card-hover rounded-3xl overflow-hidden cursor-pointer" style="background-color: #FFFFFF;" onclick="openActivityDemo('food-cards')">
+       <div class="h-40 sm:h-48 flex items-center justify-center" style="background-color: #81C784;">
+        <svg width="120" height="100" viewbox="0 0 120 100" class="w-24 sm:w-auto"><rect x="20" y="15" width="80" height="70" rx="8" fill="#FDF8F3" /> <rect x="25" y="20" width="70" height="50" rx="4" fill="#E8F5E9" /> <text x="60" y="80" text-anchor="middle" font-size="10" font-weight="bold" fill="#5D5D5D">
+          FOOD CARD
+         </text>
+        </svg>
+       </div>
+       <div class="p-4 sm:p-6">
+        <h3 class="font-bold text-lg sm:text-xl mb-2" style="color: #4CAF50;">Food Flash Cards</h3>
+        <p class="text-sm sm:text-base" style="color: #6B6B6B;">Explore beautiful cards showing different foods. Tap to flip, see the name, and learn at your own pace.</p>
+        <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold" style="color: #4CAF50;"><span>Try it now</span>
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" />
+         </svg>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12" style="background-color: #1E1E1E;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
+      <div class="col-span-2 md:col-span-1">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-color: #2A9D8F;">
+         <svg width="20" height="20" viewbox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#FDF8F3" /> <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#FDF8F3" stroke-width="2" stroke-linecap="round" />
+         </svg>
+        </div><span class="font-display font-bold text-xl text-white">NESTO</span>
+       </div>
+       <p id="footer-message" class="text-sm" style="color: #9CA3AF;">Made with care for every child. A calm space for curious minds to explore and grow.</p>
+      </div>
+      <div>
+       <h4 class="font-bold mb-4 text-white text-sm sm:text-base">Platform</h4>
+       <ul class="space-y-2">
+        <li><a href="#activities" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Activities</a></li>
+        <li><a href="#parents" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Parent Dashboard</a></li>
+        <li><a href="#privacy" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Privacy</a></li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-bold mb-4 text-white text-sm sm:text-base">Partners</h4>
+       <ul class="space-y-2">
+        <li><a href="#schools" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Schools</a></li>
+        <li><a href="#schools" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">NGOs</a></li>
+        <li><a href="#" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">CSR Partners</a></li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-bold mb-4 text-white text-sm sm:text-base">Legal</h4>
+       <ul class="space-y-2">
+        <li><a href="#" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Privacy Policy</a></li>
+        <li><a href="#" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Terms of Use</a></li>
+        <li><a href="#" class="text-xs sm:text-sm transition-colors hover:text-white" style="color: #9CA3AF;">Accessibility</a></li>
+       </ul>
+      </div>
+     </div>
+     <div class="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4" style="border-color: #374151;">
+      <p class="text-xs sm:text-sm text-center md:text-left" style="color: #9CA3AF;">© 2024 NESTO. All rights reserved.</p>
+      <div class="flex flex-wrap items-center justify-center gap-2"><span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: #374151; color: #9CA3AF;">Non-Medical</span> <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: #374151; color: #9CA3AF;">Privacy-First</span> <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: #374151; color: #9CA3AF;">Ad-Free</span>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Activity Demo Modal -->
+  <div id="activity-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4" style="background-color: rgba(0,0,0,0.7);">
+   <div class="w-full h-full max-w-5xl max-h-full md:max-h-[90%] rounded-3xl overflow-hidden" style="background-color: #FDF8F3;">
+    <div class="h-full flex flex-col"><!-- Modal Header -->
+     <div class="flex items-center justify-between p-4 sm:p-6" style="background-color: #2A9D8F;">
+      <h3 id="modal-title" class="font-display font-bold text-xl sm:text-2xl text-white">Activity Demo</h3><button onclick="closeActivityDemo()" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: rgba(255,255,255,0.2);">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" />
+       </svg></button>
+     </div><!-- Activity Content -->
+     <div id="activity-content" class="flex-1 overflow-auto p-4 sm:p-8"></div><!-- Modal Footer -->
+     <div class="p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style="background-color: #FFFFFF; border-top: 2px solid #E8E0D5;"><button onclick="resetActivity()" class="w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition-all hover:opacity-80" style="background-color: #F0EBE3; color: #5D5D5D;"> Start Over </button> <button onclick="closeActivityDemo()" class="w-full sm:w-auto px-6 py-3 rounded-full font-semibold text-white transition-all hover:opacity-90" style="background-color: #2A9D8F;"> Done Exploring </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      hero_title: 'NESTO',
+      hero_subtitle: 'Neurodiverse Education Support Tool',
+      hero_tagline: 'A calm space for curious minds',
+      what_title: 'What is NESTO?',
+      why_title: 'Why NESTO is Different',
+      activities_title: 'Explore Our Activities',
+      footer_text: 'Made with care for every child. A calm space for curious minds to explore and grow.',
+      background_color: '#FDF8F3',
+      primary_color: '#2A9D8F',
+      accent_color: '#E76F51',
+      secondary_color: '#9C7BAD',
+      text_color: '#5D5D5D',
+      font_family: 'Nunito',
+      font_size: 16
+    };
+    
+    let config = { ...defaultConfig };
+    
+    async function onConfigChange(newConfig) {
+      config = { ...config, ...newConfig };
+      
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+      
+      const heroSubtitle = document.getElementById('hero-subtitle');
+      if (heroSubtitle) heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      
+      const heroTagline = document.getElementById('hero-tagline');
+      if (heroTagline) heroTagline.textContent = config.hero_tagline || defaultConfig.hero_tagline;
+      
+      const whatTitle = document.getElementById('what-title');
+      if (whatTitle) whatTitle.textContent = config.what_title || defaultConfig.what_title;
+      
+      const whyTitle = document.getElementById('why-title');
+      if (whyTitle) whyTitle.textContent = config.why_title || defaultConfig.why_title;
+      
+      const activitiesTitle = document.getElementById('activities-title');
+      if (activitiesTitle) activitiesTitle.textContent = config.activities_title || defaultConfig.activities_title;
+      
+      const footerMessage = document.getElementById('footer-message');
+      if (footerMessage) footerMessage.textContent = config.footer_text || defaultConfig.footer_text;
+      
+      const bgColor = config.background_color || defaultConfig.background_color;
+      document.body.style.backgroundColor = bgColor;
+      
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'Quicksand, sans-serif';
+      document.body.style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.documentElement.style.fontSize = `${baseSize}px`;
+    }
+    
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => { config.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
+        }
+      };
+    }
+    
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+        ['what_title', config.what_title || defaultConfig.what_title],
+        ['why_title', config.why_title || defaultConfig.why_title],
+        ['activities_title', config.activities_title || defaultConfig.activities_title],
+        ['footer_text', config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+    
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+    }
+    
+    let currentActivity = null;
+    let currentRound = 0;
+    let totalRounds = 4;
+    
+    function openActivityDemo(activityType) {
+      currentActivity = activityType;
+      currentRound = 0;
+      const modal = document.getElementById('activity-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const activityContent = document.getElementById('activity-content');
+      
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      switch(activityType) {
+        case 'match-color':
+          totalRounds = 5;
+          modalTitle.textContent = 'Feed Children by Colour';
+          renderColorMatchingActivity(activityContent);
+          break;
+        case 'trace-paths':
+          totalRounds = 5;
+          modalTitle.textContent = 'Find the Path';
+          renderTracePathsActivity(activityContent);
+          break;
+        case 'connect-dots':
+          totalRounds = 5;
+          modalTitle.textContent = 'Connect the Dots';
+          renderConnectDotsActivity(activityContent);
+          break;
+        case 'letter-bubbles':
+          totalRounds = 4;
+          modalTitle.textContent = 'Letter Bubbles';
+          renderLetterBubblesActivity(activityContent);
+          break;
+        case 'food-cards':
+          totalRounds = 5;
+          modalTitle.textContent = 'Food Flash Cards';
+          renderFoodCardsActivity(activityContent);
+          break;
+        case 'color-by-number':
+          totalRounds = 5;
+          modalTitle.textContent = 'Colour by Number';
+          renderColorByNumberActivity(activityContent);
+          break;
+      }
+    }
+    
+    function closeActivityDemo() {
+      const modal = document.getElementById('activity-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+      currentActivity = null;
+    }
+    
+    function resetActivity() {
+      if (currentActivity) {
+        openActivityDemo(currentActivity);
+      }
+    }
+    
+    // Trace Paths Activity
+    function renderTracePathsActivity(container) {
+      const rounds = [
+        { path: 'M 50 200 L 750 200', start: { x: 50, y: 200 }, end: { x: 750, y: 200 }, description: 'Trace the straight path' },
+        { path: 'M 50 100 Q 400 300 750 100', start: { x: 50, y: 100 }, end: { x: 750, y: 100 }, description: 'Follow the gentle curve' },
+        { path: 'M 50 150 L 200 300 L 400 150 L 600 300 L 750 150', start: { x: 50, y: 150 }, end: { x: 750, y: 150 }, description: 'Trace the zigzag path' },
+        { path: 'M 400 200 m -150 0 a 150 150 0 1 0 300 0 a 150 150 0 1 0 -300 0 m 50 0 a 100 100 0 1 0 200 0 a 100 100 0 1 0 -200 0 m 50 0 a 50 50 0 1 0 100 0 a 50 50 0 1 0 -100 0', start: { x: 250, y: 200 }, end: { x: 400, y: 200 }, description: 'Follow the spiral slowly' },
+        { path: 'M 50 200 Q 150 100 250 200 Q 350 300 450 200 Q 550 100 650 200 Q 700 250 750 200', start: { x: 50, y: 200 }, end: { x: 750, y: 200 }, description: 'Trace the winding path' }
+      ];
+      
+      const round = rounds[currentRound];
+      let isTracing = false;
+      let traceProgress = 0;
+      let pathElement = null;
+      let progressCircle = null;
+      
+      container.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #E8F5F4; color: #2A9D8F; font-weight: 600;">
+            Round ${currentRound + 1} of ${totalRounds}
+          </div>
+          <p class="text-xl mb-2" style="color: #5D5D5D;">${round.description}</p>
+          <div id="trace-message" class="text-lg font-semibold h-8" style="color: #2A9D8F;"></div>
+        </div>
+        
+        <svg id="trace-canvas" width="800" height="400" viewBox="0 0 800 400" class="mx-auto rounded-3xl max-w-full" style="background-color: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08); touch-action: none;">
+          <path d="${round.path}" stroke="#E8E0D5" stroke-width="60" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path id="progress-path" d="${round.path}" stroke="#81C784" stroke-width="60" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+          <path d="${round.path}" stroke="#2A9D8F" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12,12" opacity="0.5"/>
+          <circle id="progress-circle" cx="${round.start.x}" cy="${round.start.y}" r="0" fill="#2A9D8F" opacity="0.6"/>
+          <circle cx="${round.start.x}" cy="${round.start.y}" r="35" fill="#E9C46A" stroke="white" stroke-width="4"/>
+          <circle cx="${round.start.x}" cy="${round.start.y}" r="15" fill="#2A9D8F"/>
+          <circle cx="${round.end.x}" cy="${round.end.y}" r="35" fill="#E76F51" stroke="white" stroke-width="4"/>
+          <circle cx="${round.end.x}" cy="${round.end.y}" r="15" fill="#FFFFFF"/>
+        </svg>
+      `;
+      
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      
+      const svg = container.querySelector('#trace-canvas');
+      pathElement = container.querySelector('#progress-path');
+      progressCircle = container.querySelector('#progress-circle');
+      const messageEl = container.querySelector('#trace-message');
+      
+      const pathLength = pathElement.getTotalLength();
+      
+      function getPointAlongPath(progress) {
+        const distance = progress * pathLength;
+        return pathElement.getPointAtLength(distance);
+      }
+      
+      function isNearPath(x, y, tolerance = 50) {
+        const rect = svg.getBoundingClientRect();
+        const svgX = (x - rect.left) * (800 / rect.width);
+        const svgY = (y - rect.top) * (400 / rect.height);
+        
+        let minDistance = Infinity;
+        for (let i = 0; i <= 100; i++) {
+          const point = pathElement.getPointAtLength((i / 100) * pathLength);
+          const distance = Math.sqrt(Math.pow(svgX - point.x, 2) + Math.pow(svgY - point.y, 2));
+          if (distance < minDistance) {
+            minDistance = distance;
+          }
+        }
+        
+        return minDistance <= tolerance;
+      }
+      
+      function updateProgress(x, y) {
+        if (!isTracing) return;
+        
+        const rect = svg.getBoundingClientRect();
+        const svgX = (x - rect.left) * (800 / rect.width);
+        const svgY = (y - rect.top) * (400 / rect.height);
+        
+        if (!isNearPath(x, y, 50)) return;
+        
+        let closestProgress = 0;
+        let minDistance = Infinity;
+        
+        for (let i = 0; i <= 100; i++) {
+          const progress = i / 100;
+          const point = pathElement.getPointAtLength(progress * pathLength);
+          const distance = Math.sqrt(Math.pow(svgX - point.x, 2) + Math.pow(svgY - point.y, 2));
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestProgress = progress;
+          }
+        }
+        
+        if (closestProgress > traceProgress) {
+          traceProgress = closestProgress;
+          
+          const dashOffset = pathLength * (1 - traceProgress);
+          pathElement.style.strokeDashoffset = dashOffset;
+          
+          const currentPoint = getPointAlongPath(traceProgress);
+          progressCircle.setAttribute('cx', currentPoint.x);
+          progressCircle.setAttribute('cy', currentPoint.y);
+          progressCircle.setAttribute('r', '20');
+          
+          if (traceProgress >= 0.95) {
+            isTracing = false;
+            progressCircle.setAttribute('r', '0');
+            messageEl.textContent = 'Path complete!';
+            messageEl.style.color = '#4CAF50';
+            
+            setTimeout(() => {
+              currentRound++;
+              if (currentRound < totalRounds) {
+                container.style.opacity = '0';
+                setTimeout(() => {
+                  renderTracePathsActivity(container);
+                  container.style.opacity = '1';
+                }, 400);
+              } else {
+                messageEl.textContent = 'All paths traced!';
+                setTimeout(() => { closeActivityDemo(); }, 2000);
+              }
+            }, 1500);
+          }
+        }
+      }
+      
+      function startTracing(x, y) {
+        const rect = svg.getBoundingClientRect();
+        const svgX = (x - rect.left) * (800 / rect.width);
+        const svgY = (y - rect.top) * (400 / rect.height);
+        
+        const distanceToStart = Math.sqrt(
+          Math.pow(svgX - round.start.x, 2) + 
+          Math.pow(svgY - round.start.y, 2)
+        );
+        
+        if (distanceToStart <= 50) {
+          isTracing = true;
+          traceProgress = 0;
+          messageEl.textContent = 'Keep tracing...';
+          messageEl.style.color = '#2A9D8F';
+        }
+      }
+      
+      svg.addEventListener('mousedown', (e) => { startTracing(e.clientX, e.clientY); });
+      svg.addEventListener('mousemove', (e) => { if (isTracing) updateProgress(e.clientX, e.clientY); });
+      svg.addEventListener('mouseup', () => { isTracing = false; progressCircle.setAttribute('r', '0'); });
+      svg.addEventListener('mouseleave', () => { isTracing = false; progressCircle.setAttribute('r', '0'); });
+      svg.addEventListener('touchstart', (e) => { e.preventDefault(); const touch = e.touches[0]; startTracing(touch.clientX, touch.clientY); });
+      svg.addEventListener('touchmove', (e) => { e.preventDefault(); if (isTracing) { const touch = e.touches[0]; updateProgress(touch.clientX, touch.clientY); } });
+      svg.addEventListener('touchend', (e) => { e.preventDefault(); isTracing = false; progressCircle.setAttribute('r', '0'); });
+    }
+    
+    // Connect the Dots Activity
+    function renderConnectDotsActivity(container) {
+      const rounds = [
+        { name: 'Circle', dots: [{ x: 400, y: 100 }, { x: 550, y: 175 }, { x: 550, y: 325 }, { x: 400, y: 400 }, { x: 250, y: 325 }, { x: 250, y: 175 }], color: '#2A9D8F' },
+        { name: 'Leaf', dots: [{ x: 400, y: 100 }, { x: 500, y: 180 }, { x: 550, y: 280 }, { x: 520, y: 380 }, { x: 400, y: 420 }, { x: 280, y: 380 }, { x: 250, y: 280 }, { x: 300, y: 180 }], color: '#81C784' },
+        { name: 'Heart', dots: [{ x: 400, y: 160 }, { x: 300, y: 120 }, { x: 220, y: 140 }, { x: 200, y: 220 }, { x: 250, y: 300 }, { x: 400, y: 420 }, { x: 550, y: 300 }, { x: 600, y: 220 }, { x: 580, y: 140 }, { x: 500, y: 120 }], color: '#E76F51' },
+        { name: 'Flower', dots: [{ x: 400, y: 100 }, { x: 480, y: 130 }, { x: 530, y: 200 }, { x: 520, y: 280 }, { x: 480, y: 350 }, { x: 400, y: 390 }, { x: 320, y: 350 }, { x: 280, y: 280 }, { x: 270, y: 200 }, { x: 320, y: 130 }], color: '#DDA0DD' },
+        { name: 'Star', dots: [{ x: 400, y: 100 }, { x: 430, y: 190 }, { x: 520, y: 210 }, { x: 460, y: 270 }, { x: 480, y: 360 }, { x: 400, y: 320 }, { x: 320, y: 360 }, { x: 340, y: 270 }, { x: 280, y: 210 }, { x: 370, y: 190 }], color: '#E9C46A' }
+      ];
+      
+      const round = rounds[currentRound];
+      let currentDot = 0;
+      
+      container.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #F3E5F5; color: #9C7BAD; font-weight: 600;">Round ${currentRound + 1} of ${totalRounds}</div>
+          <p class="text-xl mb-2" style="color: #5D5D5D;">Connect the dots in order to reveal a ${round.name}!</p>
+          <div id="dots-message" class="text-lg font-semibold h-8" style="color: #9C7BAD;"></div>
+        </div>
+        <svg id="dots-canvas" width="800" height="500" viewBox="0 0 800 500" class="mx-auto rounded-3xl max-w-full" style="background-color: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+          <g id="lines-group"></g>
+          <g id="dots-group"></g>
+        </svg>
+      `;
+      
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      
+      const svg = container.querySelector('#dots-canvas');
+      const linesGroup = container.querySelector('#lines-group');
+      const dotsGroup = container.querySelector('#dots-group');
+      const messageEl = container.querySelector('#dots-message');
+      
+      round.dots.forEach((dot, index) => {
+        const dotGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        dotGroup.setAttribute('class', 'dot-group');
+        dotGroup.style.cursor = 'pointer';
+        
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', dot.x);
+        circle.setAttribute('cy', dot.y);
+        circle.setAttribute('r', index === 0 ? '20' : '18');
+        circle.setAttribute('fill', index === 0 ? round.color : '#F0EBE3');
+        circle.setAttribute('stroke', round.color);
+        circle.setAttribute('stroke-width', '3');
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', dot.x);
+        text.setAttribute('y', dot.y + 6);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '18');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('fill', index === 0 ? '#FFFFFF' : round.color);
+        text.textContent = index + 1;
+        
+        dotGroup.appendChild(circle);
+        dotGroup.appendChild(text);
+        dotsGroup.appendChild(dotGroup);
+        
+        dotGroup.addEventListener('click', () => {
+          if (index !== currentDot) {
+            if (index === 0 && currentDot === 0) return;
+            messageEl.textContent = `Click dot ${currentDot + 1} next!`;
+            messageEl.style.color = '#E9C46A';
+            setTimeout(() => { messageEl.textContent = ''; }, 1500);
+            return;
+          }
+          
+          if (currentDot > 0) {
+            const prevDot = round.dots[currentDot - 1];
+            const currDot = round.dots[currentDot];
+            
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', prevDot.x);
+            line.setAttribute('y1', prevDot.y);
+            line.setAttribute('x2', currDot.x);
+            line.setAttribute('y2', currDot.y);
+            line.setAttribute('stroke', round.color);
+            line.setAttribute('stroke-width', '4');
+            line.setAttribute('stroke-linecap', 'round');
+            linesGroup.appendChild(line);
+          }
+          
+          circle.setAttribute('fill', round.color);
+          text.setAttribute('fill', '#FFFFFF');
+          circle.setAttribute('r', '20');
+          
+          currentDot++;
+          
+          if (currentDot === round.dots.length) {
+            const lastDot = round.dots[round.dots.length - 1];
+            const firstDot = round.dots[0];
+            
+            const closingLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            closingLine.setAttribute('x1', lastDot.x);
+            closingLine.setAttribute('y1', lastDot.y);
+            closingLine.setAttribute('x2', firstDot.x);
+            closingLine.setAttribute('y2', firstDot.y);
+            closingLine.setAttribute('stroke', round.color);
+            closingLine.setAttribute('stroke-width', '4');
+            closingLine.setAttribute('stroke-linecap', 'round');
+            linesGroup.appendChild(closingLine);
+            
+            messageEl.textContent = `${round.name} complete!`;
+            messageEl.style.color = '#4CAF50';
+            
+            setTimeout(() => {
+              currentRound++;
+              if (currentRound < totalRounds) {
+                container.style.opacity = '0';
+                setTimeout(() => { renderConnectDotsActivity(container); container.style.opacity = '1'; }, 400);
+              } else {
+                messageEl.textContent = 'All shapes complete!';
+                setTimeout(() => { closeActivityDemo(); }, 2000);
+              }
+            }, 2000);
+          } else {
+            messageEl.textContent = `Great! Now find dot ${currentDot + 1}`;
+            messageEl.style.color = '#2A9D8F';
+          }
+        });
+      });
+    }
+    
+    // Color Matching Activity - Feed Children by Colour
+    function renderColorMatchingActivity(container) {
+      const rounds = [
+        { children: [{ color: '#E76F51', name: 'Red' }, { color: '#81C784', name: 'Green' }, { color: '#E9C46A', name: 'Yellow' }], foods: [{ emoji: '🍎', color: '#E76F51', name: 'Apple' }, { emoji: '🥦', color: '#81C784', name: 'Broccoli' }, { emoji: '🍌', color: '#E9C46A', name: 'Banana' }] },
+        { children: [{ color: '#F4A261', name: 'Orange' }, { color: '#9C7BAD', name: 'Purple' }, { color: '#5DADE2', name: 'Blue' }], foods: [{ emoji: '🥕', color: '#F4A261', name: 'Carrot' }, { emoji: '🍇', color: '#9C7BAD', name: 'Grapes' }, { emoji: '🫐', color: '#5DADE2', name: 'Blueberry' }] },
+        { children: [{ color: '#E76F51', name: 'Red' }, { color: '#E9C46A', name: 'Yellow' }, { color: '#81C784', name: 'Green' }], foods: [{ emoji: '🍓', color: '#E76F51', name: 'Strawberry' }, { emoji: '🌽', color: '#E9C46A', name: 'Corn' }, { emoji: '🥒', color: '#81C784', name: 'Cucumber' }] },
+        { children: [{ color: '#FFB6B9', name: 'Pink' }, { color: '#C9A86A', name: 'Brown' }, { color: '#81C784', name: 'Green' }], foods: [{ emoji: '🍑', color: '#FFB6B9', name: 'Peach' }, { emoji: '🥔', color: '#C9A86A', name: 'Potato' }, { emoji: '🥝', color: '#81C784', name: 'Kiwi' }] }
+      ];
+      
+      const round = rounds[currentRound];
+      const childrenStates = round.children.map(() => ({ fed: false }));
+      let draggedFood = null;
+      
+      container.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #E8F5F4; color: #2A9D8F; font-weight: 600;">Round ${currentRound + 1} of ${totalRounds}</div>
+          <p class="text-xl mb-2" style="color: #5D5D5D;">Drag food to the child wearing matching colored clothes!</p>
+          <div id="match-message" class="text-lg font-semibold h-8" style="color: #2A9D8F;"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12" id="children-row"></div>
+        <div class="flex justify-center gap-6 flex-wrap" id="food-items"></div>
+      `;
+      
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      
+      const childrenRow = container.querySelector('#children-row');
+      const foodItems = container.querySelector('#food-items');
+      const messageEl = container.querySelector('#match-message');
+      
+      round.children.forEach((child, index) => {
+        const childDiv = document.createElement('div');
+        childDiv.className = 'child-target text-center p-6 rounded-3xl transition-all';
+        childDiv.style.backgroundColor = '#FFFFFF';
+        childDiv.dataset.color = child.color;
+        childDiv.dataset.index = index;
+        
+        childDiv.innerHTML = `
+          <svg width="120" height="140" viewBox="0 0 120 140" class="mx-auto mb-3">
+            <circle cx="60" cy="30" r="20" fill="#F4A261"/>
+            <circle cx="55" cy="27" r="3" fill="#FDF8F3"/>
+            <circle cx="65" cy="27" r="3" fill="#FDF8F3"/>
+            <circle cx="55" cy="27" r="1.5" fill="#5D5D5D"/>
+            <circle cx="65" cy="27" r="1.5" fill="#5D5D5D"/>
+            <path d="M55 35 Q60 38 65 35" stroke="#2A9D8F" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="40" y="50" width="40" height="50" rx="10" fill="${child.color}"/>
+            <rect x="30" y="100" width="15" height="30" rx="7" fill="${child.color}"/>
+            <rect x="75" y="100" width="15" height="30" rx="7" fill="${child.color}"/>
+            <circle cx="60" cy="120" r="25" fill="rgba(255,255,255,0)" class="food-plate"/>
+          </svg>
+          <p class="font-bold text-sm" style="color: #5D5D5D;">${child.name} Clothes</p>
+        `;
+        
+        childDiv.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          if (!childrenStates[index].fed) {
+            childDiv.style.transform = 'scale(1.05)';
+            childDiv.style.boxShadow = '0 8px 24px rgba(42, 157, 143, 0.2)';
+          }
+        });
+        
+        childDiv.addEventListener('dragleave', () => {
+          childDiv.style.transform = '';
+          childDiv.style.boxShadow = '';
+        });
+        
+        childDiv.addEventListener('drop', (e) => {
+          e.preventDefault();
+          childDiv.style.transform = '';
+          childDiv.style.boxShadow = '';
+          
+          if (childrenStates[index].fed) return;
+          
+          if (draggedFood && draggedFood.color === child.color) {
+            childrenStates[index].fed = true;
+            
+            const plate = childDiv.querySelector('.food-plate');
+            const foodEmoji = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            foodEmoji.setAttribute('x', '60');
+            foodEmoji.setAttribute('y', '128');
+            foodEmoji.setAttribute('text-anchor', 'middle');
+            foodEmoji.setAttribute('font-size', '32');
+            foodEmoji.textContent = draggedFood.emoji;
+            plate.parentElement.appendChild(foodEmoji);
+            
+            draggedFood.element.style.opacity = '0.3';
+            draggedFood.element.style.pointerEvents = 'none';
+            
+            messageEl.textContent = `Perfect! ${draggedFood.name} for ${child.name}!`;
+            messageEl.style.color = '#4CAF50';
+            
+            setTimeout(() => { messageEl.textContent = ''; }, 2000);
+            
+            const allFed = childrenStates.every(c => c.fed);
+            if (allFed) {
+              setTimeout(() => {
+                messageEl.textContent = 'Everyone is fed! Great job!';
+                messageEl.style.color = '#E76F51';
+                
+                setTimeout(() => {
+                  currentRound++;
+                  if (currentRound < totalRounds) {
+                    container.style.opacity = '0';
+                    setTimeout(() => { renderColorMatchingActivity(container); container.style.opacity = '1'; }, 400);
+                  } else {
+                    messageEl.textContent = 'All rounds complete!';
+                    setTimeout(() => { closeActivityDemo(); }, 2000);
+                  }
+                }, 2000);
+              }, 500);
+            }
+            
+            draggedFood = null;
+          } else {
+            messageEl.textContent = 'Wrong color! Try a different child.';
+            messageEl.style.color = '#E9C46A';
+            setTimeout(() => { messageEl.textContent = ''; }, 2000);
+          }
+        });
+        
+        childrenRow.appendChild(childDiv);
+      });
+      
+      round.foods.forEach((food, index) => {
+        const foodDiv = document.createElement('div');
+        foodDiv.className = 'food-item cursor-move rounded-3xl p-6 text-center transition-all hover:scale-105';
+        foodDiv.style.backgroundColor = '#FFFFFF';
+        foodDiv.draggable = true;
+        foodDiv.dataset.color = food.color;
+        
+        foodDiv.innerHTML = `
+          <div class="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-5xl" style="background-color: ${food.color}20;">${food.emoji}</div>
+          <p class="font-bold text-sm" style="color: #5D5D5D;">${food.name}</p>
+        `;
+        
+        foodDiv.addEventListener('dragstart', () => {
+          draggedFood = { ...food, element: foodDiv };
+          foodDiv.style.opacity = '0.5';
+        });
+        
+        foodDiv.addEventListener('dragend', () => {
+          foodDiv.style.opacity = '1';
+        });
+        
+        foodItems.appendChild(foodDiv);
+      });
+    }
+    
+    function renderLetterBubblesActivity(container) {
+      const roundLetters = [['A', 'A', 'm', 'm'], ['B', 'B', 's', 's'], ['D', 'D', 't', 't'], ['L', 'L', 'p', 'p']];
+      const letters = roundLetters[currentRound];
+      const colors = ['#2A9D8F', '#E76F51', '#E9C46A', '#9C7BAD'];
+      const bubbles = letters.map((letter, i) => ({ letter, color: colors[i], matched: false, id: i, originalTop: null, originalLeft: null }));
+      
+      let draggedBubble = null;
+      let draggedElement = null;
+      
+      container.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #E8F5F4; color: #2A9D8F; font-weight: 600;">Round ${currentRound + 1} of ${totalRounds}</div>
+          <p class="text-xl mb-2" style="color: #5D5D5D;">Drag bubbles with the same letter together to merge them!</p>
+          <div id="bubble-message" class="text-lg font-semibold h-8" style="color: #2A9D8F;"></div>
+        </div>
+        <div class="relative max-w-4xl mx-auto" style="min-height: 400px;" id="bubble-container"></div>
+      `;
+      
+      const bubbleContainer = container.querySelector('#bubble-container');
+      const messageEl = container.querySelector('#bubble-message');
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      
+      const positions = [{ top: '15%', left: '15%' }, { top: '20%', left: '65%' }, { top: '60%', left: '20%' }, { top: '65%', left: '70%' }];
+      
+      bubbles.forEach((bubble, index) => {
+        const bubbleEl = document.createElement('div');
+        bubbleEl.className = 'absolute cursor-move transition-all touch-none';
+        bubbleEl.dataset.id = bubble.id;
+        bubbleEl.draggable = true;
+        bubbleEl.style.userSelect = 'none';
+        bubbleEl.style.top = positions[index].top;
+        bubbleEl.style.left = positions[index].left;
+        bubble.originalTop = positions[index].top;
+        bubble.originalLeft = positions[index].left;
+        
+        bubbleEl.innerHTML = `<div class="w-32 h-32 rounded-full flex items-center justify-center text-5xl font-bold" style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), ${bubble.color}); color: white; box-shadow: 0 8px 32px ${bubble.color}60, inset -2px -2px 8px rgba(0,0,0,0.15), inset 4px 4px 16px rgba(255,255,255,0.6); border: 3px solid rgba(255,255,255,0.5);">${bubble.letter}</div>`;
+        
+        bubbleEl.addEventListener('dragstart', (e) => {
+          if (bubbles[index].matched) { e.preventDefault(); return; }
+          draggedBubble = index;
+          draggedElement = bubbleEl;
+          bubbleEl.style.opacity = '0.7';
+        });
+        
+        bubbleEl.addEventListener('dragend', () => { if (draggedElement) draggedElement.style.opacity = '1'; });
+        
+        bubbleEl.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          if (index !== draggedBubble && !bubbles[index].matched) bubbleEl.style.transform = 'scale(1.15)';
+        });
+        
+        bubbleEl.addEventListener('dragleave', () => { if (index !== draggedBubble) bubbleEl.style.transform = ''; });
+        
+        bubbleEl.addEventListener('drop', (e) => {
+          e.preventDefault();
+          bubbleEl.style.transform = '';
+          if (index !== draggedBubble && draggedBubble !== null) {
+            const draggedBubbleData = bubbles[draggedBubble];
+            const targetBubbleData = bubbles[index];
+            
+            if (draggedBubbleData.letter === targetBubbleData.letter) {
+              bubbles[draggedBubble].matched = true;
+              bubbles[index].matched = true;
+              
+              messageEl.textContent = `Perfect! ${draggedBubbleData.letter} matched!`;
+              messageEl.style.color = '#4CAF50';
+              
+              const targetEl = bubbleContainer.children[index];
+              const targetRect = targetEl.getBoundingClientRect();
+              const containerRect = bubbleContainer.getBoundingClientRect();
+              
+              draggedElement.style.transition = 'all 0.5s ease-out';
+              draggedElement.style.top = ((targetRect.top - containerRect.top) / containerRect.height * 100) + '%';
+              draggedElement.style.left = ((targetRect.left - containerRect.left) / containerRect.width * 100) + '%';
+              draggedElement.style.opacity = '0';
+              draggedElement.style.transform = 'scale(0.5)';
+              
+              targetEl.style.transition = 'all 0.5s ease-out';
+              targetEl.style.transform = 'scale(1.3)';
+              
+              setTimeout(() => {
+                if (draggedElement) draggedElement.style.display = 'none';
+                targetEl.style.opacity = '0';
+                targetEl.style.transform = 'scale(0)';
+                
+                setTimeout(() => {
+                  messageEl.textContent = '';
+                  
+                  const allMatched = bubbles.every(b => b.matched);
+                  if (allMatched) {
+                    messageEl.textContent = 'Round complete!';
+                    messageEl.style.color = '#E76F51';
+                    
+                    setTimeout(() => {
+                      currentRound++;
+                      if (currentRound < totalRounds) {
+                        container.style.opacity = '0';
+                        setTimeout(() => { renderLetterBubblesActivity(container); container.style.opacity = '1'; }, 400);
+                      } else {
+                        messageEl.textContent = 'All rounds complete!';
+                        setTimeout(() => { closeActivityDemo(); }, 2000);
+                      }
+                    }, 1500);
+                  }
+                }, 200);
+              }, 500);
+              
+              draggedBubble = null;
+              draggedElement = null;
+            } else {
+              messageEl.textContent = 'Different letters! Try again.';
+              messageEl.style.color = '#E9C46A';
+              setTimeout(() => { messageEl.textContent = ''; }, 1500);
+              draggedBubble = null;
+              draggedElement = null;
+            }
+          }
+        });
+        
+        bubbleContainer.appendChild(bubbleEl);
+      });
+    }
+    
+    function renderFoodCardsActivity(container) {
+      const roundFoods = [
+        [{ emoji: '🥕', name: 'CARROT', color: '#E76F51' }, { emoji: '🥦', name: 'BROCCOLI', color: '#81C784' }, { emoji: '🌽', name: 'CORN', color: '#E9C46A' }, { emoji: '🍅', name: 'TOMATO', color: '#E76F51' }],
+        [{ emoji: '🍎', name: 'APPLE', color: '#E76F51' }, { emoji: '🍌', name: 'BANANA', color: '#E9C46A' }, { emoji: '🍇', name: 'GRAPES', color: '#9C7BAD' }, { emoji: '🍊', name: 'ORANGE', color: '#F4A261' }],
+        [{ emoji: '🍓', name: 'STRAWBERRY', color: '#E76F51' }, { emoji: '���', name: 'BLUEBERRY', color: '#5DADE2' }, { emoji: '🍒', name: 'CHERRY', color: '#E76F51' }, { emoji: '🥝', name: 'KIWI', color: '#81C784' }],
+        [{ emoji: '🥚', name: 'EGG', color: '#F4A261' }, { emoji: '🧀', name: 'CHEESE', color: '#E9C46A' }, { emoji: '🐟', name: 'FISH', color: '#5DADE2' }, { emoji: '🥜', name: 'PEANUTS', color: '#C9A86A' }],
+        [{ emoji: '🍿', name: 'POPCORN', color: '#E9C46A' }, { emoji: '🍪', name: 'COOKIE', color: '#C9A86A' }, { emoji: '🍦', name: 'ICE CREAM', color: '#A8DADC' }, { emoji: '🍰', name: 'CAKE', color: '#FFB6B9' }]
+      ];
+      
+      const foods = roundFoods[currentRound];
+      let currentCardIndex = 0;
+      let isFlipped = false;
+      
+      container.innerHTML = `
+        <div class="max-w-2xl mx-auto text-center">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #E8F5F4; color: #2A9D8F; font-weight: 600;">Round ${currentRound + 1} of ${totalRounds}</div>
+          <p class="text-xl mb-8" style="color: #5D5D5D;">Tap the card to flip it and see the name!</p>
+          <div class="mb-6">
+            <div id="flashcard" class="relative mx-auto cursor-pointer" style="width: 100%; max-width: 400px; height: 500px; perspective: 1000px;">
+              <div id="card-inner" class="relative w-full h-full transition-all duration-500" style="transform-style: preserve-3d;">
+                <div class="absolute w-full h-full rounded-3xl p-12 flex flex-col items-center justify-center" style="background-color: #FFFFFF; backface-visibility: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+                  <div id="card-emoji" class="text-9xl mb-4"></div>
+                  <div class="text-sm font-medium" style="color: #9CA3AF;">Tap to reveal</div>
+                </div>
+                <div class="absolute w-full h-full rounded-3xl p-12 flex flex-col items-center justify-center" style="background-color: #FFFFFF; backface-visibility: hidden; transform: rotateY(180deg); box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+                  <div id="card-name" class="text-4xl font-bold mb-4"></div>
+                  <div id="card-emoji-back" class="text-7xl"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-4">
+            <button id="prev-card" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: #E76F51; color: white;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="px-6 py-3 rounded-full font-semibold" style="background-color: #F0EBE3; color: #5D5D5D;"><span id="card-counter">1</span> of ${foods.length}</div>
+            <button id="next-card" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: #2A9D8F; color: white;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+      
+      const cardInner = container.querySelector('#card-inner');
+      const cardEmoji = container.querySelector('#card-emoji');
+      const cardName = container.querySelector('#card-name');
+      const cardEmojiBack = container.querySelector('#card-emoji-back');
+      const cardCounter = container.querySelector('#card-counter');
+      
+      function updateCard() {
+        const food = foods[currentCardIndex];
+        cardEmoji.textContent = food.emoji;
+        cardName.textContent = food.name;
+        cardName.style.color = food.color;
+        cardEmojiBack.textContent = food.emoji;
+        cardCounter.textContent = currentCardIndex + 1;
+        if (isFlipped) { cardInner.style.transform = 'rotateY(0deg)'; isFlipped = false; }
+      }
+      
+      container.querySelector('#flashcard').addEventListener('click', () => {
+        isFlipped = !isFlipped;
+        cardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      });
+      
+      container.querySelector('#prev-card').addEventListener('click', () => {
+        currentCardIndex = (currentCardIndex - 1 + foods.length) % foods.length;
+        updateCard();
+      });
+      
+      container.querySelector('#next-card').addEventListener('click', () => {
+        currentCardIndex++;
+        if (currentCardIndex >= foods.length) {
+          currentRound++;
+          if (currentRound < totalRounds) {
+            container.style.opacity = '0';
+            setTimeout(() => { renderFoodCardsActivity(container); container.style.opacity = '1'; }, 400);
+          } else {
+            container.innerHTML = '<div class="text-center text-xl font-semibold" style="color: #E76F51;">All rounds complete!</div>';
+            setTimeout(() => { closeActivityDemo(); }, 2000);
+          }
+        } else {
+          updateCard();
+        }
+      });
+      
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      updateCard();
+    }
+    
+    function renderColorByNumberActivity(container) {
+      const rounds = [
+        { name: 'Balloon', colors: [{ number: 1, color: '#E76F51', name: 'Red' }, { number: 2, color: '#5DADE2', name: 'Blue' }, { number: 3, color: '#E9C46A', name: 'Yellow' }], sections: [{ id: 's1', number: 1, path: 'M 200 150 Q 150 150 150 200 Q 150 250 200 250 L 200 150 Z' }, { id: 's2', number: 2, path: 'M 200 150 L 200 250 Q 250 250 250 200 Q 250 150 200 150 Z' }, { id: 's3', number: 3, path: 'M 175 250 Q 200 270 225 250 L 200 250 Z' }, { id: 's4', number: 3, path: 'M 200 270 Q 190 320 200 370' }] },
+        { name: 'Fish', colors: [{ number: 1, color: '#81C784', name: 'Green' }, { number: 2, color: '#F4A261', name: 'Orange' }, { number: 3, color: '#5DADE2', name: 'Blue' }], sections: [{ id: 's1', number: 2, path: 'M 250 200 Q 300 160 320 200 Q 300 240 250 200 Z' }, { id: 's2', number: 2, path: 'M 250 200 Q 200 160 180 200 Q 200 240 250 200 Z' }, { id: 's3', number: 3, path: 'M 180 200 L 140 170 L 140 230 Z' }, { id: 's4', number: 1, path: 'M 240 180 L 235 150 L 250 170 Z' }, { id: 's5', number: 3, path: 'M 280 190 Q 285 185 290 190 Q 285 195 280 190 Z' }] },
+        { name: 'House', colors: [{ number: 1, color: '#C9A86A', name: 'Brown' }, { number: 2, color: '#FFB6B9', name: 'Pink' }, { number: 3, color: '#F0EBE3', name: 'White' }], sections: [{ id: 's1', number: 1, path: 'M 200 120 L 280 180 L 120 180 Z' }, { id: 's2', number: 2, path: 'M 120 180 L 120 280 L 190 280 L 190 180 Z' }, { id: 's3', number: 2, path: 'M 210 180 L 210 280 L 280 280 L 280 180 Z' }, { id: 's4', number: 1, path: 'M 190 220 L 190 280 L 210 280 L 210 220 Z' }, { id: 's5', number: 3, path: 'M 140 200 L 140 230 L 170 230 L 170 200 Z' }, { id: 's6', number: 3, path: 'M 230 200 L 230 230 L 260 230 L 260 200 Z' }] },
+        { name: 'Flower', colors: [{ number: 1, color: '#9C7BAD', name: 'Purple' }, { number: 2, color: '#E9C46A', name: 'Yellow' }, { number: 3, color: '#81C784', name: 'Green' }], sections: [{ id: 's1', number: 2, path: 'M 200 200 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0' }, { id: 's2', number: 1, path: 'M 200 175 Q 180 150 200 130 Q 220 150 200 175 Z' }, { id: 's3', number: 1, path: 'M 225 185 Q 250 170 265 185 Q 245 205 225 185 Z' }, { id: 's4', number: 1, path: 'M 225 215 Q 250 230 240 255 Q 215 235 225 215 Z' }, { id: 's5', number: 1, path: 'M 175 215 Q 160 235 150 255 Q 160 230 175 215 Z' }, { id: 's6', number: 1, path: 'M 175 185 Q 155 205 135 185 Q 150 170 175 185 Z' }, { id: 's7', number: 3, path: 'M 195 225 L 185 320' }, { id: 's8', number: 3, path: 'M 185 260 Q 160 270 165 285 Q 180 280 185 260 Z' }] },
+        { name: 'Tree', colors: [{ number: 1, color: '#2D5016', name: 'Dark Green' }, { number: 2, color: '#81C784', name: 'Light Green' }, { number: 3, color: '#8B4513', name: 'Brown' }], sections: [{ id: 's1', number: 3, path: 'M 180 250 L 180 320 L 220 320 L 220 250 Z' }, { id: 's2', number: 2, path: 'M 200 250 m -70 0 Q 130 220 130 190 Q 130 160 200 160 Q 270 160 270 190 Q 270 220 200 250 Z' }, { id: 's3', number: 1, path: 'M 200 190 m -60 0 Q 140 165 140 140 Q 140 115 200 115 Q 260 115 260 140 Q 260 165 200 190 Z' }, { id: 's4', number: 1, path: 'M 200 140 m -45 0 Q 155 120 155 100 Q 155 80 200 80 Q 245 80 245 100 Q 245 120 200 140 Z' }] }
+      ];
+      
+      const round = rounds[currentRound];
+      const sectionStates = round.sections.map(() => ({ filled: false }));
+      let selectedColor = null;
+      
+      container.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full mb-4" style="background-color: #FFF8E7; color: #D4A84B; font-weight: 600;">Round ${currentRound + 1} of ${totalRounds}</div>
+          <p class="text-xl mb-2" style="color: #5D5D5D;">Colour the ${round.name}: Select a colour, then tap sections with that number!</p>
+          <div id="color-message" class="text-lg font-semibold h-8" style="color: #D4A84B;"></div>
+        </div>
+        <div class="flex justify-center gap-4 mb-8 flex-wrap" id="color-palette">
+          ${round.colors.map(c => `
+            <button class="color-btn flex flex-col items-center gap-2 p-4 rounded-2xl transition-all hover:scale-105" data-number="${c.number}" style="background-color: #FFFFFF; border: 3px solid transparent;">
+              <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full" style="background-color: ${c.color};"></div>
+              <div class="font-bold text-xl sm:text-2xl" style="color: ${c.color};">${c.number}</div>
+              <div class="text-xs sm:text-sm font-medium" style="color: #5D5D5D;">${c.name}</div>
+            </button>
+          `).join('')}
+        </div>
+        <svg width="400" height="400" viewBox="0 0 400 400" class="mx-auto rounded-3xl max-w-full" style="background-color: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" id="coloring-canvas"></svg>
+      `;
+      
+      container.style.transition = 'opacity 0.4s ease-in-out';
+      
+      const canvas = container.querySelector('#coloring-canvas');
+      const messageEl = container.querySelector('#color-message');
+      const colorButtons = container.querySelectorAll('.color-btn');
+      
+      round.sections.forEach((section, index) => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.style.cursor = 'pointer';
+        
+        let element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        element.setAttribute('d', section.path);
+        if (section.path.includes('M') && section.path.includes('L') && section.path.split('L').length <= 3) {
+          element.setAttribute('stroke-width', '8');
+          element.setAttribute('stroke-linecap', 'round');
+          element.setAttribute('fill', 'none');
+        }
+        element.setAttribute('fill', '#FDF8F3');
+        element.setAttribute('stroke', '#E8E0D5');
+        element.setAttribute('stroke-width', '2');
+        
+        const bbox = element.getBBox ? element.getBBox() : { x: 200, y: 200, width: 50, height: 50 };
+        const centerX = bbox.x + bbox.width / 2;
+        const centerY = bbox.y + bbox.height / 2;
+        
+        const textBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        textBg.setAttribute('cx', centerX);
+        textBg.setAttribute('cy', centerY);
+        textBg.setAttribute('r', '28');
+        textBg.setAttribute('fill', '#FFFFFF');
+        textBg.setAttribute('stroke', '#000000');
+        textBg.setAttribute('stroke-width', '5');
+        textBg.setAttribute('pointer-events', 'none');
+        textBg.setAttribute('opacity', '1');
+        textBg.classList.add('number-bg-' + index);
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', centerX);
+        text.setAttribute('y', centerY + 10);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '40');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('fill', '#000000');
+        text.setAttribute('pointer-events', 'none');
+        text.setAttribute('opacity', '1');
+        text.classList.add('number-text-' + index);
+        text.textContent = section.number;
+        
+        g.appendChild(element);
+        g.appendChild(textBg);
+        g.appendChild(text);
+        canvas.appendChild(g);
+        
+        g.addEventListener('click', () => {
+          if (!selectedColor) {
+            messageEl.textContent = 'Please select a colour first!';
+            messageEl.style.color = '#E9C46A';
+            setTimeout(() => { messageEl.textContent = ''; }, 1500);
+            return;
+          }
+          
+          if (sectionStates[index].filled) return;
+          
+          if (section.number === selectedColor.number) {
+            sectionStates[index].filled = true;
+            element.setAttribute('fill', selectedColor.color);
+            
+            // Hide numbers by setting display:none equivalent for SVG
+            textBg.setAttribute('display', 'none');
+            text.setAttribute('display', 'none');
+            
+            element.style.transition = 'all 0.3s ease';
+            
+            const allFilled = sectionStates.every(s => s.filled);
+            if (allFilled) {
+              messageEl.textContent = `${round.name} complete!`;
+              messageEl.style.color = '#4CAF50';
+              
+              setTimeout(() => {
+                currentRound++;
+                if (currentRound < totalRounds) {
+                  container.style.opacity = '0';
+                  setTimeout(() => { renderColorByNumberActivity(container); container.style.opacity = '1'; }, 400);
+                } else {
+                  messageEl.textContent = 'All pictures complete!';
+                  setTimeout(() => { closeActivityDemo(); }, 2000);
+                }
+              }, 2000);
+            }
+          } else {
+            messageEl.textContent = `This section is number ${section.number}`;
+            messageEl.style.color = '#E9C46A';
+            setTimeout(() => { if (!sectionStates[index].filled) messageEl.textContent = ''; }, 2000);
+          }
+        });
+      });
+      
+      colorButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const number = parseInt(btn.dataset.number);
+          selectedColor = round.colors.find(c => c.number === number);
+          colorButtons.forEach(b => {
+            if (b === btn) {
+              b.style.borderColor = selectedColor.color;
+              b.style.boxShadow = `0 4px 12px ${selectedColor.color}40`;
+            } else {
+              b.style.borderColor = 'transparent';
+              b.style.boxShadow = '';
+            }
+          });
+          messageEl.textContent = `Selected: ${selectedColor.name} (${selectedColor.number})`;
+          messageEl.style.color = selectedColor.color;
+        });
+      });
+    }
+    
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c68047c25995524',t:'MTc2OTg1MDAxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
